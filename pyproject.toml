@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "repl_nix_fastapidouban"
+version = "0.1.0"
+description = ""
+authors = ["Replit user <<>>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.20.0"
+fastapi = "^0.92.0"
+pydantic = "^1.10.5"
+requests-html = "^0.10.0"
+SQLAlchemy = "^2.0.4"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

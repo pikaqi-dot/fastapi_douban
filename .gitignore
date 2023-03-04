@@ -1,4 +1,5 @@
 spider
 __pycache__
 .replit
-.replit.nix
+replit.nix
+venv
