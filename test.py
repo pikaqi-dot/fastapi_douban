@@ -33,7 +33,7 @@ def getTop250(url):
       datalist['movie']['top250'].append(data)
 
 # ---------------------------------------------------------------------------------------------------
-def Movie(url):
+def movie(url):
   time.sleep(0.5)
   global datalist
   h = getHtml(url)
@@ -47,12 +47,14 @@ def Movie(url):
   for item in h.html.xpath(
       '//*[@class="screening-bd"]//*[@class="ui-slide-item"]')[:-2]:
     data = {}
+    f=item.find('img',first=True)
     try:
-      item.find('img')
+      a=f.attrs
     except:
       continue
-    data['title'] = item.find('img', first=True).attrs['alt']
-    data['imgSrc'] = item.find('img', first=True).attrs['src']
+    
+    data['title'] = f.attrs['alt']
+    data['imgSrc'] = f.attrs['src']
     data['rating'] = item.find('.subject-rate', first=True).text
     detailUrl = item.find('.poster>a', first=True).attrs['href']
     h = getHtml(detailUrl)
@@ -60,6 +62,8 @@ def Movie(url):
     data['actor'] = h.html.xpath('//*[@id="info"]/span[3]/span[2]/a/text()')
     ratingNum=h.html.find('.rating_people>span')
     data['ratingNum']=(len(ratingNum) and ratingNum[0].text) or "无"
+    data['date']=h.html.xpath('//*[@id="content"]/h1/span[2]/text()')
+    data['time']=h.html.xpath('//*[@id="info"]/span[14]/text()',first=True)
     datalist['movie']['overview']['hoting']['content'].append(data)
     
 
@@ -84,8 +88,8 @@ def group(url):
 
 def doTest():
   try:
+    movie('https://movie.douban.com/')
     getTop250('https://movie.douban.com/top250?start=')
-    Movie('https://movie.douban.com/')
     book('https://book.douban.com/')
     group('https://www.douban.com/group/explore')
     with open('data.json', 'w') as f:
