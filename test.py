@@ -12,14 +12,12 @@ datalist['movie'] = {}
 datalist['book'] = {}
 datalist['group'] = {}
 
-
 def getHtml(url):
   h = session.get(url, headers=header)
   if (h.status_code == 200):
     return h
   return None
-
-
+  
 def getTop250(url):
   global datalist
   datalist['movie']['top250'] = []
@@ -33,7 +31,6 @@ def getTop250(url):
       data['name'] = item.xpath('//a/span[1]/text()')[0]
       data['rateNum'] = item.xpath('//*[@class="star"]/span[4]/text()')[0]
       datalist['movie']['top250'].append(data)
-
 
 # ---------------------------------------------------------------------------------------------------
 def Movie(url):
@@ -61,7 +58,10 @@ def Movie(url):
     h = getHtml(detailUrl)
     data['director'] = h.html.find('#info .attrs a', first=True).text
     data['actor'] = h.html.xpath('//*[@id="info"]/span[3]/span[2]/a/text()')
+    ratingNum=h.html.find('.rating_people>span')
+    data['ratingNum']=(len(ratingNum) and ratingNum[0].text) or "无"
     datalist['movie']['overview']['hoting']['content'].append(data)
+    
 
 
 # ----------------------------------------------------------------------------------------------------
@@ -95,7 +95,7 @@ def doTest():
   except:
     print(
       '\033[31m+----------------------错误:--------------------------+\033[0m')
-    print('\033[33m', traceback.print_exc(), '\033[0m')
+    print('\033[33m{}\033[0m'.format(traceback.print_exc()))
     print(
       '\033[31m+-----------------------------------------------------+\033[0m')
     return False
