@@ -1,4 +1,4 @@
-import json
+import json,re
 from requests_html import HTMLSession, UserAgent
 import time
 # import threading
@@ -62,8 +62,10 @@ def movie(url):
     data['actor'] = h.html.xpath('//*[@id="info"]/span[3]/span[2]/a/text()')
     ratingNum=h.html.find('.rating_people>span')
     data['ratingNum']=(len(ratingNum) and ratingNum[0].text) or "无"
-    data['date']=h.html.xpath('//*[@id="content"]/h1/span[2]/text()')
-    data['time']=h.html.xpath('//*[@id="info"]/span[14]/text()',first=True)
+    data['date']=h.html.xpath('//*[@id="content"]/h1/span[2]/text()',first=True)
+    movie_time=h.html.xpath('//*[@id="info"]/*[@property="v:runtime"]/text()')
+    data['time']=(len(movie_time) and movie_time[0]) or "暂无此信息"
+    data['area']=re.findall("制片国家/地区: (.*?)',",str( h.html.find('.article #info')[0].text.split('\n')))[0] or "暂无此信息"
     datalist['movie']['overview']['hoting']['content'].append(data)
     
 
