@@ -2,9 +2,10 @@ from requests_html import HTMLSession, UserAgent
 import re,json
 
 session = HTMLSession()
-h = session.get('https://movie.douban.com',
+h = session.get('https://movie.douban.com/review/best/',
                 headers={'User-Agent': UserAgent().random})
      
-for item in h.html.xpath('//*[@id="reviews"]/div[2]/div'):
-  print(item.find('.review-content')[0].text)
-  print(re.findall('(.*?)... \(全文\)',item.find('.review-content')[0].text)[0])
+for item in h.html.xpath('//*[@id="content"]/div/div[1]/div[1]/div'):
+  print(item.find('.action span')[1].text or "0")
+
+

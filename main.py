@@ -87,6 +87,11 @@ async def 电影热点总览():
       or (doTest() and parseJSON().get('movie',{}).get('overview',False)) \
       or "获取数据失败"
 
+@app.get('/movie/review')
+async def 影评():
+  return (parseJSON() and parseJSON().get('movie',{}).get('reviewBest',False)) \
+      or (doTest() and parseJSON().get('movie',{}).get('reviewBest',False)) \
+      or "获取数据失败"
 
 @app.get('/book/lists')
 async def 图书分目录列表():

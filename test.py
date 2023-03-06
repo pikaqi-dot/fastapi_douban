@@ -77,6 +77,37 @@ def movie(url):
     data['star']=item.find('.review-bd>.review-meta>span')[0].search('<span class="allstar{}"/>')[0]
     data['content']=re.findall('(.*?)... \(全文\)',item.find('.review-content')[0].text)[0]
     datalist['movie']['overview']['hoting']['pinglun'].append(data)
+  movieReview()
+
+    
+def movieReview():
+  h=getHtml('https://movie.douban.com/review/best/')
+  global datalist
+  datalist['movie']['reviewBest']=[]
+  for item in h.html.xpath('//*[@id="content"]/div/div[1]/div[1]/div'):
+    data={}
+    data['imgSrc']=item.find('.subject-img img')[0].attrs['src']
+    data['userImgSrc']=item.find('.main-hd img')[0].attrs['src']
+    data['userName']=item.find('.main-hd .name')[0].text
+    try:
+      data['star']=item.find('.main-hd span:nth-of-type(1)')[0].search('<span class="allstar{} main-title-rating"')[0]
+    except:
+      data['star']="50"
+    data['date']=item.find('.main-meta')[0].text
+    data['title']=item.find('.main-bd>h2>a')[0].text
+    data['content']=re.findall('(.*?)\xa0\(展开',item.find('.short-content')[0].text)[0]
+    rate=item.find('.action span')
+    data['upRate']=rate[0].text or "0"
+    data['downRate']=rate[1].text or "0"
+    data['reply']=item.find('.reply')[0].text
+    datalist['movie']['reviewBest'].append(data)
+    
+    
+    
+    
+    
+  
+  
     
     
 
