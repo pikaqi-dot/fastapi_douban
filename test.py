@@ -70,7 +70,7 @@ def movie(url):
   datalist['movie']['overview']['hoting']['pinglun']=[]
   for item in h1.html.xpath('//*[@id="reviews"]/div[2]/div'):
     data={}
-    data['imgSrc']=item.find('img')[0].attrs['src']
+    data['imgSrc']=item.find('img')[0].attrs['data-original']
     data['title']=item.find('.review-bd>h3>a')[0].text
     data['name']=item.find('.review-bd>.review-meta>a:nth-child(1)')[0].text
     data['movieName']=item.find('.review-bd>.review-meta>a:nth-child(2)')[0].text
