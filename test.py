@@ -65,7 +65,7 @@ def movie(url):
     data['date']=h2.html.xpath('//*[@id="content"]/h1/span[2]/text()',first=True)
     movie_time=h2.html.xpath('//*[@id="info"]/*[@property="v:runtime"]/text()')
     data['time']=(len(movie_time) and movie_time[0]) or "暂无此信息"
-    data['area']=re.findall("制片国家/地区: (.*?)',",str( h2.html.find('.article #info')[0].text.split('\n')))[0] or "暂无此信息"
+    data['area']=re.findall("制片国家/地区: (.*?)',",str( h2.html.find('.article #info')[0].text.split('\n')))[0]
     datalist['movie']['overview']['hoting']['content'].append(data)
   datalist['movie']['overview']['hoting']['pinglun']=[]
   for item in h1.html.xpath('//*[@id="reviews"]/div[2]/div'):
@@ -75,6 +75,7 @@ def movie(url):
     data['name']=item.find('.review-bd>.review-meta>a:nth-child(1)')[0].text
     data['movieName']=item.find('.review-bd>.review-meta>a:nth-child(2)')[0].text
     data['star']=item.find('.review-bd>.review-meta>span')[0].search('<span class="allstar{}"/>')[0]
+    data['content']=re.findall('(.*?)... \(全文\)',item.find('.review-content')[0].text)[0]
     datalist['movie']['overview']['hoting']['pinglun'].append(data)
     
     
