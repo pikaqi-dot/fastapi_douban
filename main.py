@@ -102,7 +102,7 @@ async def 影评(page:int=1):
     return (parseJSON() and parseJSON().get('movie',{}).get('reviewBest',False)) \
       or (doTest() and parseJSON().get('movie',{}).get('reviewBest',False)) \
       or "获取数据失败"
-  return  parseMovieReview(page) or getMoreMovieReview(page) or "获取影评{}页失败！".format(page)
+  return  parseMovieReview(page) or getMoreMovieReview(page) or "获取影评第{}页失败！".format(page)
 
 @app.get('/book/lists')
 async def 图书分目录列表():

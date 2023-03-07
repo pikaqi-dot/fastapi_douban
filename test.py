@@ -107,6 +107,13 @@ def movieReview():
 def getMoreMovieReview(page:int):
   try:
     h=session.get('https://movie.douban.com/review/best/?start={}'.format(str((page-1)*20)),headers={'User-Agent': UserAgent().random})
+    try:
+      h.html.xpath('//*[@id="content"]/div/div[1]/div[1]/div')[0]
+    except:
+      print('\033[31m+-------------------抓取未爬取的评论页第{}页错误:爬虫已被禁！--------------+\033[0m'.format(page))
+      print(traceback.print_exc())
+      print('\033[31m+-------------------------------------------------------------------------+\033[0m')
+      return False
     pageData=[]
     for item in h.html.xpath('//*[@id="content"]/div/div[1]/div[1]/div'):
       data={}
@@ -130,11 +137,12 @@ def getMoreMovieReview(page:int):
       os.mkdir("movieReviewPage")
     with open("movieReviewPage/{}".format(fileName),'w') as f:
       f.write(json.dumps(pageData))
+    print('pageData:',pageData)
     return pageData
     
   except:
     print('\033[31m+----------------------抓取评论页{}错误:--------------------------+\033[0m'.format(page))
-    traceback.print_exc()
+    print(traceback.print_exc())
     print('\033[31m+------------------------------------------------------------+\033[0m')
     return False
   
