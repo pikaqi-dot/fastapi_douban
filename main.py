@@ -3,7 +3,7 @@ from fastapi import FastAPI, Depends
 # from dataModel.database import SessionLocal, engine, Base
 # from sqlalchemy.orm import Session
 from fastapi.middleware.cors import CORSMiddleware
-from test import doTest
+from test import doTest,getMoreMovieReview
 import json
 import os
 import uvicorn
@@ -25,7 +25,16 @@ def parseJSON():
     f.close()
     return data
   return False
-
+def parseMovieReview(page):
+  filePath='movieReviewPage/MovieReview{}'.format(page)
+  if(os.path.exists(filePath)):
+    f=open(filePath,'r')
+    data = json.loads(f.read())
+    f.close()
+    return data
+  return False
+    
+    
 
 # 新建用户
 # @app.post("/users/", response_model=dataModel.schemas.User)
@@ -88,10 +97,12 @@ async def 电影热点总览():
       or "获取数据失败"
 
 @app.get('/movie/review')
-async def 影评():
-  return (parseJSON() and parseJSON().get('movie',{}).get('reviewBest',False)) \
+async def 影评(page:int=1):
+  if(page==1):  
+    return (parseJSON() and parseJSON().get('movie',{}).get('reviewBest',False)) \
       or (doTest() and parseJSON().get('movie',{}).get('reviewBest',False)) \
       or "获取数据失败"
+  return  parseMovieReview(page) or getMoreMovieReview(page) or "获取影评{}页失败！".format(page)
 
 @app.get('/book/lists')
 async def 图书分目录列表():
